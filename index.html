@@ -1,0 +1,78 @@
+<head>
+    <!-- css creditd to w3 schools -->
+    <style>
+        * {
+          box-sizing: border-box;
+        }
+        .column {
+          float: left;
+          width: 33.33%;
+          padding: 10px;
+          border:1px solid black;
+          height: 300px;
+        }
+        .row:after {
+          content: "";
+          display: table;
+          clear: both;
+        }
+    </style>
+    <script src="./pubSub.js"></script>
+</head>
+<body>
+    <h1> Hello Readers</h1>
+    <div class="row">
+        <div class="column" style="background-color:#f4f0f0;">
+          <h2>Pub Sub</h2>
+          <div id="pubSub"></div>
+        </div>
+        <div class="column" style="background-color:#f4f0f0;">
+          <h2>Data Store</h2>
+          <div id="dataStore"></div>
+        </div>
+        <div class="column" style="background-color:#f4f0f0;">
+          <h2>Event Factory</h2>
+          <div id="eventFac"></div>
+        </div>
+      </div>
+</body>
+<script>
+    let pubSubObj = new pubSub();
+    let dataStoreObj =  new dataStore(true);
+    let eventFacObj = new EventFactory(true);
+    let pubSubDiv = document.getElementById('pubSub');
+    let dataStoreDiv = document.getElementById('dataStore');
+    let eventFacDiv = document.getElementById('eventFac');
+    pubSubObj.subscribe((data)=>{
+        console.log("from pussub",data);
+        let p = document.createElement("p");
+        p.textContent='Pub Sub '+data
+        pubSubDiv.appendChild(p);
+    });
+    pubSubObj.publish("hello World 1");
+    pubSubObj.publish("hello World 2");
+    pubSubObj.publish("hello World 3");
+    dataStoreObj.subscribe((data)=>{
+        let p = document.createElement("p");
+        p.textContent='Data Store '+data.data
+        dataStoreDiv.appendChild(p);
+    });
+    dataStoreObj.publish("hello World 1");
+    dataStoreObj.publish("hello World 2");
+    dataStoreObj.publish("hello World 3");
+    let handler =function efFn(event){
+                    console.log(event);
+                    eventFacObj.subscribe(handler).then((data)=>{ 
+                        let p = document.createElement("p");
+                        p.textContent='Event Factory '+data.data
+                        data.history.length
+                        eventFacDiv.appendChild(p);
+                    });
+    }
+    window.addEventListener(eventFacObj.getEFI(),handler)
+    eventFacObj.publish("hello World 1");
+    eventFacObj.publish("hello World 2");
+    eventFacObj.publish("hello World 3");
+
+    
+    </script>
